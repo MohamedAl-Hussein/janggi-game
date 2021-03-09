@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import abc
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -6,16 +8,24 @@ if TYPE_CHECKING:
     from janggi_board import JanggiBoard
 
 
-class ICommand:
+class ICommand(metaclass=abc.ABCMeta):
     """Interface representing Command class for implementing the Command Pattern."""
 
+    @classmethod
+    def __subclasshook__(cls, subclass) -> bool:
+        return (hasattr(subclass, "execute") and callable(subclass.execute) and
+                hasattr(subclass, "un_execute") and callable(subclass.un_execute) or
+                NotImplemented)
+
+    @abc.abstractmethod
     def execute(self) -> None:
         """Execute a command."""
-        pass
+        raise NotImplementedError
 
+    @abc.abstractmethod
     def un_execute(self) -> None:
         """Execute the inverse of a command."""
-        pass
+        raise NotImplementedError
 
 
 class MoveCommand(ICommand):
