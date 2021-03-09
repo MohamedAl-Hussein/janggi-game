@@ -1,0 +1,2 @@
+class JanggiBoard:
+    pass
