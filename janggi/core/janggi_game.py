@@ -1,0 +1,2 @@
+class JanggiGame:
+    pass
