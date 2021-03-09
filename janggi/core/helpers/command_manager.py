@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -6,36 +7,14 @@ if TYPE_CHECKING:
     from stack import Stack
 
 
-class ICommandManager:
-    """
-    Interface for representing a Command Manager that is responsible for doing, undoing, and redoing move commands.
-
-    Acts as an extension to the Command Pattern.
-    """
+class CommandManager:
+    """Responsible for doing, undoing, and redoing commands."""
 
     def __init__(self, undo_stack: Stack, redo_stack: Stack) -> None:
         """Create a new undo_stack and redo_stack to store undo commands and redo commands respectively."""
 
         self._undo_stack: Stack = undo_stack
         self._redo_stack: Stack = redo_stack
-
-    def do(self, command: ICommand) -> None:
-        pass
-
-    def undo(self) -> None:
-        pass
-
-    def redo(self) -> None:
-        pass
-
-
-class MoveCommandManager(ICommandManager):
-    """Responsible for doing, undoing, and redoing move commands."""
-
-    def __init__(self, undo_stack: Stack, redo_stack: Stack) -> None:
-        """Create a new undo_stack and redo_stack to store undo move commands and redo move commands respectively."""
-
-        super().__init__(undo_stack, redo_stack)
 
     def do(self, command: ICommand) -> None:
         """
