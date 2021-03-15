@@ -25,23 +25,24 @@ class Point2D:
     def y(self) -> Union[int, float]:
         return self._y
 
-    def __add__(self, other: Point2D):
+    def __add__(self, other: Point2D) -> Point2D:
         """Override addition operator to assist in performing vector addition."""
 
         return Point2D(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other: Point2D):
+    def __sub__(self, other: Point2D) -> Point2D:
         """Override subtraction operator to assist in performing vector subtraction."""
 
         return Point2D(self.x - other.x, self.y - other.y)
 
-    def __eq__(self, other: Point2D):
+    def __eq__(self, other: Point2D) -> bool:
         """Override the equality operator to assist in comparing two points by their x andy attributes."""
 
         return (self.x, self.y) == (other.x, other.y)
 
-    def __ne__(self, other: Point2D):
+    def __ne__(self, other: Point2D) -> bool:
         """Override the inequality operator to assist in comparing two points by they x and y attributes."""
+
         return (self.x, self.y) != (other.x, other.y)
 
     def to_tuple(self):
