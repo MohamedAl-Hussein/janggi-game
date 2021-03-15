@@ -113,8 +113,8 @@ class JanggiPiece:
 class PieceColor(enum.Enum):
     """Enum class representing various colors a janggi piece can have."""
 
-    BLUE = "blue"
-    RED = "red"
+    BLUE = enum.auto()
+    RED = enum.auto()
 
 
 class PieceCategory(enum.Enum):
