@@ -4,7 +4,7 @@ import abc
 from typing import Dict, List, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from janggi_piece import JanggiPiece, PieceCategory
+    from janggi_piece import JanggiPiece, PieceCategory, PieceColor
     from utils.point import Point2D
     from utils.rectangle import Rectangle
 
@@ -48,7 +48,7 @@ class InsidePalaceStrategy(IObstacleDetectionStrategy):
         For any piece, they cannot move diagonally if the path does not involve a palace corner.
 
         :keyword list[Point2D] path: A list of Point2D objects to denote a path from point source to destination.
-        :keyword str color: The color of the piece at the source coordinate.
+        :keyword PieceColor color: The color of the piece at the source coordinate.
         :return: True if obstacles exist in path, False otherwise.
         """
 
@@ -56,7 +56,7 @@ class InsidePalaceStrategy(IObstacleDetectionStrategy):
         palace_bound: bool = self.options.get("palace_bound")
         palaces: Dict[str, Rectangle] = self.options.get("palace_corners")
         path: List[Point2D] = params.get("path")
-        color: str = params.get("color")
+        color: PieceColor = params.get("color")
 
         source: Point2D = path[0]
         destination: Point2D = path[-1]
@@ -84,7 +84,7 @@ class InsidePalaceStrategy(IObstacleDetectionStrategy):
 
         # --------------------------CASE 2: Locked in Palace------------------------------------ #
         if palace_bound:
-            if destination not in palaces[color]:
+            if destination not in palaces[color.name.lower()]:
                 return True
             else:
                 return False
