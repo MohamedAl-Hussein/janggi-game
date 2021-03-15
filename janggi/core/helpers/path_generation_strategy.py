@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 
 
 class IPathGenerationStrategy(metaclass=abc.ABCMeta):
+    """Interface for implementing the Strategy Pattern to generate paths starting from a given point of origin."""
 
     @classmethod
     def __subclasshook__(cls, subclass) -> bool:
@@ -166,16 +167,16 @@ class BranchPathStrategy(IPathGenerationStrategy):
 
         # Create combination pairs to be used for path generation at next step.
         # If x and y are equal to 0, it's the same as not moving so skip and continue.
-        combinations = [(s, e, x, y)
+        combinations = [(s, m, x, y)
                         for s in range(*step_range)
-                        for e in scalars
+                        for m in scalars
                         for x in x_magnitudes
                         for y in y_magnitudes
                         if not (x == 0 == y)]
 
         # For each combination, calculate the vector array from source and convert them to a path.
-        for s, e, x, y in combinations:
-            vector_array = [source, Point2D(e * x, int(not e) * y)] + s * [Point2D(x, y)]
+        for s, m, x, y in combinations:
+            vector_array = [source, Point2D(m * x, int(not m) * y)] + s * [Point2D(x, y)]
             path = self.vector_array_to_path(vector_array)
 
             yield path
