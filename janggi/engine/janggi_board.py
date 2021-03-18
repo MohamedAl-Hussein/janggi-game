@@ -37,26 +37,18 @@ class JanggiBoard:
 
     @property
     def coord_map(self) -> Dict[Tuple[int, int], JanggiPiece]:
-        """Return the coordinate map containing Piece positions."""
-
         return self.__coord_map
 
     @property
     def blue_palace(self) -> Rectangle:
-        """Return the blue palace."""
-
         return self.__blue_palace
 
     @property
     def red_palace(self) -> Rectangle:
-        """Return the red palace."""
-
         return self.__red_palace
 
     @property
     def boundaries(self) -> Rectangle:
-        """Return the board boundaries."""
-
         return self.__boundaries
 
     def move(self, source: Point2D, destination: Point2D) -> None:
