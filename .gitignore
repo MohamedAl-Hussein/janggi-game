@@ -128,3 +128,9 @@ dmypy.json
 
 # Project-specific
 *.txt
+
+# Godot
+.import/
+*.translation
+export_presets.cfg
+.mono/
