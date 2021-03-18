@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import abc
-from typing import Dict, List, Optional, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
+
+from janggi_piece import JanggiPiece, PieceCategory, PieceColor
 
 if TYPE_CHECKING:
-    from janggi_piece import JanggiPiece, PieceCategory, PieceColor
     from utils.point import Point2D
     from utils.rectangle import Rectangle
 
@@ -17,21 +18,21 @@ class IObstacleDetectionStrategy(metaclass=abc.ABCMeta):
         return (hasattr(subclass, "is_obstacle_in_path") and callable(subclass.is_obstacle_in_path) or
                 NotImplemented)
 
-    def __init__(self, **options):
-        """Initialize object with optional keyword arguments."""
-
-        self._options = options
-
-    @property
-    def options(self):
-        return self._options
-
     @abc.abstractmethod
-    def is_obstacle_in_path(self, **params) -> bool:
+    def is_obstacle_in_path(self,
+                            path_objects: List[Optional[JanggiPiece]],
+                            path: List[Point2D] = None,
+                            blue_palace: Rectangle = None,
+                            red_palace: Rectangle = None
+                            ) -> bool:
         """
         Return true if the path contains obstacles that can't be traversed past.
 
-        Can accept optional parameters.
+        :param path_objects: A list of Piece objects (or None) on a path ordered from start to finish.
+        :param path: A list of Point2D objects to denote a path from point source to destination.
+        :param blue_palace: Instance of blue palace.
+        :param red_palace: Instance of red palace.
+        :return: True if obstacles exist in path, False otherwise.
         """
         raise NotImplementedError
 
@@ -39,7 +40,12 @@ class IObstacleDetectionStrategy(metaclass=abc.ABCMeta):
 class InsidePalaceStrategy(IObstacleDetectionStrategy):
     """Obstacle detection strategies specific to pieces that are inside a palace."""
 
-    def is_obstacle_in_path(self, **params) -> bool:
+    def is_obstacle_in_path(self,
+                            path_objects: List[Optional[JanggiPiece]],
+                            path: List[Point2D] = None,
+                            blue_palace: Rectangle = None,
+                            red_palace: Rectangle = None
+                            ) -> bool:
         """
         Given a path from originating from within a palace, determine if any obstacles exist on the path.
 
@@ -47,34 +53,35 @@ class InsidePalaceStrategy(IObstacleDetectionStrategy):
         For Soldiers, Cannons, and Chariots, they cannot move diagonally outside of a palace.
         For any piece, they cannot move diagonally if the path does not involve a palace corner.
 
-        :keyword list[Point2D] path: A list of Point2D objects to denote a path from point source to destination.
-        :keyword PieceColor color: The color of the piece at the source coordinate.
+        :param path_objects: A list of Piece objects (or None) on a path ordered from start to finish.
+        :param path: A list of Point2D objects to denote a path from point source to destination.
+        :param blue_palace: Instance of blue palace.
+        :param red_palace: Instance of red palace.
         :return: True if obstacles exist in path, False otherwise.
         """
 
         # Retrieve parameters.
-        palace_bound: bool = self.options.get("palace_bound")
-        palaces: Dict[str, Rectangle] = self.options.get("palace_corners")
-        path: List[Point2D] = params.get("path")
-        color: PieceColor = params.get("color")
-
+        palace_bound: bool = path_objects[0].palace_bound
+        color: PieceColor = path_objects[0].color
         source: Point2D = path[0]
         destination: Point2D = path[-1]
-        source_palace: str = "blue" if source in palaces["blue"] else "red"
+
+        source_palace: Rectangle = blue_palace if source in blue_palace else red_palace
+        local_palace: Rectangle = blue_palace if color is PieceColor.BLUE else red_palace
 
         # Determine translation made from source to destination.
         translation: Point2D = destination - source
 
         # -----------------------CASE 1: Move not Across Diagonal Paths------------------------- #
         source_and_destination_checks = [
-            destination == palaces[source_palace].top_left,
-            destination == palaces[source_palace].bottom_left,
-            destination == palaces[source_palace].top_right,
-            destination == palaces[source_palace].bottom_right,
-            source == palaces[source_palace].top_left,
-            source == palaces[source_palace].bottom_left,
-            source == palaces[source_palace].top_right,
-            source == palaces[source_palace].bottom_right
+            destination == source_palace.top_left,
+            destination == source_palace.bottom_left,
+            destination == source_palace.top_right,
+            destination == source_palace.bottom_right,
+            source == source_palace.top_left,
+            source == source_palace.bottom_left,
+            source == source_palace.top_right,
+            source == source_palace.bottom_right
         ]
 
         # Diagonal translation but neither source nor destination are the palace's corners.
@@ -84,14 +91,14 @@ class InsidePalaceStrategy(IObstacleDetectionStrategy):
 
         # --------------------------CASE 2: Locked in Palace------------------------------------ #
         if palace_bound:
-            if destination not in palaces[color.name.lower()]:
+            if destination not in local_palace:
                 return True
             else:
                 return False
 
         # --------------------------CASE 3: Limited Diagonal Movement---------------------------- #
         # Path does not leave past palace walls.
-        if destination in palaces[source_palace]:
+        if destination in source_palace:
             return False
 
         # Path from source to destination involves a diagonal translation.
@@ -104,24 +111,29 @@ class InsidePalaceStrategy(IObstacleDetectionStrategy):
 class IllegalDestinationStrategy(IObstacleDetectionStrategy):
     """Obstacle detection strategies specific to illegal path destinations."""
 
-    def is_obstacle_in_path(self, **params) -> bool:
+    def is_obstacle_in_path(self,
+                            path_objects: List[Optional[JanggiPiece]],
+                            path: List[Point2D] = None,
+                            blue_palace: Rectangle = None,
+                            red_palace: Rectangle = None
+                            ) -> bool:
         """
         Determine if the destination contains a piece that can't be captured.
 
         For all piece, they cannot capture a friendly piece.
         For Cannons, in addition to friendly piece, they cannot capture another Cannon.
 
-        :keyword JanggiPiece source_piece: The piece that is making the move.
-        :keyword JanggiPiece target_piece: The piece that the source_piece want's to capture.
-        :keyword bool category_restricted: Boolean value denoting whether the source piece can't capture another piece.
-                 of the same category.
+        :param path_objects: A list of Piece objects (or None) on a path ordered from start to finish.
+        :param path: A list of Point2D objects to denote a path from point source to destination.
+        :param blue_palace: Instance of blue palace.
+        :param red_palace: Instance of red palace.
         :return: True if obstacles exist in path, False otherwise.
         """
 
         # Retrieve key args.
-        source_piece: JanggiPiece = params.get("source_piece")
-        target_piece: JanggiPiece = params.get("target_piece")
-        category_restricted: bool = params.get("category_restricted")
+        source_piece: JanggiPiece = path_objects[0]
+        target_piece: JanggiPiece = path_objects[-1]
+        category_restricted = True if source_piece.category is PieceCategory.CANNON else False
 
         # No Piece at destination.
         if target_piece is None:
@@ -141,26 +153,28 @@ class IllegalDestinationStrategy(IObstacleDetectionStrategy):
 class IllegalPathStrategy(IObstacleDetectionStrategy):
     """Obstacle detection strategies specific to illegal paths between source and destination points."""
 
-    def is_obstacle_in_path(self, **params) -> bool:
+    def is_obstacle_in_path(self,
+                            path_objects: List[Optional[JanggiPiece]],
+                            path: List[Point2D] = None,
+                            blue_palace: Rectangle = None,
+                            red_palace: Rectangle = None
+                            ) -> bool:
         """
         Determine if a path contains Pieces that cannot moved past.
 
         For all Pieces except for the Cannon, they cannot move past another Piece.
         For Cannons, exactly one Piece must exist in its path, and it cannot be another Cannon.
 
-        :keyword List[Optional[JanggiPiece]] path_objects: A list of Piece objects (or None) on a path ordered from
-                 start to finish.
-        :keyword bool category_restricted: Boolean value denoting whether the source Piece can't pass another Piece
-                 of the same category.
+        :param path_objects: A list of Piece objects (or None) on a path ordered from start to finish.
+        :param path: A list of Point2D objects to denote a path from point source to destination.
+        :param blue_palace: Instance of blue palace.
+        :param red_palace: Instance of red palace.
         :return: True if obstacles exist in path, False otherwise.
         """
 
-        # Retrieve key args.
-        path_objects: List[Optional[JanggiPiece]] = params.get("path_objects")
-        category_restricted: bool = params.get("category_restricted")
-
         source_piece: JanggiPiece = path_objects[0]
         source_category: PieceCategory = source_piece.category
+        category_restricted = True if source_category is PieceCategory.CANNON else False
         categories: List[PieceCategory] = [obj.category for obj in path_objects[1:-1] if obj is not None]
 
         # -----------------------CASE 1: Category Restricted Piece -------------------------- #
