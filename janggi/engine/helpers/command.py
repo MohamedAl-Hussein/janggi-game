@@ -37,6 +37,8 @@ class MoveCommand(ICommand):
         """
         Create new instance of object and save source, destination, and board state.
 
+        Create property for storing piece that was removed as a result of calling this command.
+
         :param source: Source coordinate.
         :param destination: Destination coordinate.
         :param board: Game board map.
@@ -70,14 +72,10 @@ class MoveCommand(ICommand):
 
     @property
     def removed_piece(self) -> Optional[JanggiPiece]:
-        """Return the piece that was removed as a result of the move command."""
-
         return self.__removed_piece
 
     @removed_piece.setter
     def removed_piece(self, value: Optional[JanggiPiece]) -> None:
-        """Set the removed piece to the object that is going to be removed."""
-
         self.__removed_piece = value
 
     def execute(self) -> None:

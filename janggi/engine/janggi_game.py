@@ -232,38 +232,26 @@ class JanggiGame:
 
     @property
     def board(self):
-        """Returns the JanggiBoard object instance."""
-
         return self.__board
 
     @property
     def command_manager(self):
-        """Returns the CommandManager object instance."""
-
         return self.__command_manager
 
     @property
     def game_state(self) -> GameState:
-        """Returns the game's current finish state."""
-
         return self.__game_state
 
     @game_state.setter
     def game_state(self, value: GameState) -> None:
-        """Sets the game current state to provided value."""
-
         self.__game_state = value
 
     @property
     def player_turn(self) -> PieceColor:
-        """Returns the color of the player whose turn it is."""
-
         return self.__player_turn
 
     @player_turn.setter
-    def player_turn(self, value: "PieceColor") -> None:
-        """Sets the player turn to the provided color."""
-
+    def player_turn(self, value: PieceColor) -> None:
         self.__player_turn = value
 
     # endregion
@@ -492,7 +480,7 @@ class JanggiGame:
         else:
             self.player_turn = PieceColor.BLUE
 
-    def algebraic_notation_to_coordinate_system(self, position: str) -> "Point2D":
+    def algebraic_notation_to_coordinate_system(self, position: str) -> Point2D:
         """
         Translates algebraic coordinate notation to a Point2D object.
 
