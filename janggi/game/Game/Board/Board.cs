@@ -122,6 +122,18 @@ public class Board : Node2D
         {
             return;
         }
+
+        // Check if destination can be reached by piece.
+        bool isDestinationReachable = this.Source.Occupant.Destinations
+            .Where(dest => dest.Item1 == this.Destination.Coordinates.Item1 && dest.Item2 == this.Destination.Coordinates.Item2)
+            .Any();
+
+        if (!isDestinationReachable)
+        {
+            return;
+        }
+
+        // Move to destination.
         Piece target = this.Destination.Occupant;
 
         if (!(target is null))
@@ -141,14 +153,5 @@ public class Board : Node2D
 
     public override void _Process(float delta)
     {
-        if (!(this.Source is null) && !(this.Destination is null))
-        {
-            if (this.Source != this.Destination)
-            {
-                MovePiece();
-                this.Source = null;
-                this.Destination = null;
-            }
-        }
     }
 }
