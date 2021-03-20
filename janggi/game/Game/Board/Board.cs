@@ -2,6 +2,7 @@ using Godot;
 using janggi.Game.Piece;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Board : Node2D
 {
@@ -61,7 +62,8 @@ public class Board : Node2D
         {
             for (int y = 0; y < 10; y++)
             {
-                Area2D newTile = (Area2D)tile.Instance();
+                Tile newTile = (Tile)tile.Instance();
+                newTile.Coordinates = new Tuple<int, int>(x, y);
                 newTile.Position = new Vector2(x * this._scale + this._tileOffset, y * this._scale + this._tileOffset);
                 newTile.Connect("TileSelected", this, "OnTileSelected");
                 AddChild(newTile);
@@ -77,10 +79,11 @@ public class Board : Node2D
         int offset = this._tileOffset + this._pieceOffset;
         foreach (PieceData data in _pieceData)
         {
-            Area2D newPiece = (Area2D)piece.Instance();
+            Piece newPiece = (Piece)piece.Instance();
             Texture texture = (Texture)ResourceLoader.Load($"res://Assets/Pieces/HanjaBlue/{data.Color}_{data.Category}.png");
             newPiece.GetNode<Sprite>("Sprite").Texture = texture;
             newPiece.Position = new Vector2(data.Position.x * this._scale + offset, data.Position.y * this._scale + offset);
+            newPiece.Destinations.Add(new Tuple<int, int>(data.Position.x + 1, data.Position.y));
             AddChild(newPiece);
 
             Tuple<int, int> key = new Tuple<int, int>(data.Position.x, data.Position.y);
@@ -99,6 +102,18 @@ public class Board : Node2D
         if (this.Source is null && !(tile.Occupant is null))
         {
             this.Source = tile;
+            tile.HighlightTile();
+            foreach (Tuple<int, int> destination in tile.Occupant.Destinations)
+            {
+                if (!_tileMap.ContainsKey(destination))
+                {
+                    return;
+                }
+                Tile destTile = (Tile)_tileMap[destination];
+
+                destTile.HighlightTile();
+                GD.Print($"DESTINATION: {destination}.");
+            }
             return;
         }
 
@@ -109,6 +124,14 @@ public class Board : Node2D
 
             GD.Print($"MOVE from {this.Source.Occupant.Position} to {this.Destination.Position}");
             MovePiece();
+
+            // Clear all tile destination highlights.
+            this.Source.UnHighlightTile();
+
+            foreach (Tile t in _tileMap.Values)
+            {
+                t.UnHighlightTile();
+            }
 
             // Clear source and destination.
             this.Source = null;
