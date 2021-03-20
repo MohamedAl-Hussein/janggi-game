@@ -1,14 +1,15 @@
 using Godot;
 using janggi.Game.Piece;
 using System;
+using System.Collections.Generic;
 
 public class Board : Node2D
 {
     private readonly int _tileOffset = 18;
     private readonly int _pieceOffset = 32;
     private readonly int _scale = 100;
-    public Area2D Source;
-    public Area2D Destination;
+    public Tile Source;
+    public Tile Destination;
     private readonly PieceData[] _pieceData = new PieceData[]
     {
         new PieceData(0, "red", "chariot", (x : 0, y : 0)),
@@ -44,6 +45,7 @@ public class Board : Node2D
         new PieceData(30, "blue", "soldier", (x : 6, y : 6)),
         new PieceData(31, "blue", "soldier", (x : 8, y : 6))
     };
+    private Dictionary<Tuple<int, int>, Node> _tileMap = new Dictionary<Tuple<int, int>, Node>();
 
     public override void _Ready()
     {
@@ -61,8 +63,10 @@ public class Board : Node2D
             {
                 Area2D newTile = (Area2D)tile.Instance();
                 newTile.Position = new Vector2(x * this._scale + this._tileOffset, y * this._scale + this._tileOffset);
-                newTile.Connect("TileSelected", this, "OnItemSelected");
+                newTile.Connect("TileSelected", this, "OnTileSelected");
                 AddChild(newTile);
+
+                _tileMap.Add(new Tuple<int, int>(x, y), newTile);
             }
         }
     }
@@ -77,57 +81,62 @@ public class Board : Node2D
             Texture texture = (Texture)ResourceLoader.Load($"res://Assets/Pieces/HanjaBlue/{data.Color}_{data.Category}.png");
             newPiece.GetNode<Sprite>("Sprite").Texture = texture;
             newPiece.Position = new Vector2(data.Position.x * this._scale + offset, data.Position.y * this._scale + offset);
-            newPiece.Connect("PieceSelected", this, "OnItemSelected");
             AddChild(newPiece);
+
+            Tuple<int, int> key = new Tuple<int, int>(data.Position.x, data.Position.y);
+
+            Tile tile = (Tile)_tileMap[key];
+            tile.Occupant = (Piece)newPiece;
         }
     }
 
-    public void OnItemSelected(Area2D item)
+    public void OnTileSelected(Tile tile)
     {
-        string t = ""; 
+        GD.Print($"TILE selected at position: {tile.Position}");
+        GD.Print($"OCCUPANT is: {tile.Occupant?.GetType()}");
 
-        switch (item)
+        // No piece at source and tile selected contains piece.
+        if (this.Source is null && !(tile.Occupant is null))
         {
-            case Piece piece:
+            this.Source = tile;
+            return;
+        }
 
-                t = "PIECE";
-                if (this.Source is null)
-                {
-                    this.Source = piece;
-                }
-                else
-                {
-                    this.Destination = piece;
-                }
-                break;
-            case Tile tile:
-                t = "TILE";
-                if (!(this.Source is null))
-                {
-                    this.Destination = tile;
-                }
-                break;
-        } 
+        // Piece at source so tile selected is destination.
+        if (!(this.Source is null))
+        {
+            this.Destination = tile;
 
-        //GD.Print($"{t} selected at position: {item.Position}.");
-        GD.Print($"SOURCE: {this.Source?.GetType()}. DESTINATION: {this.Destination?.GetType()}.");
+            GD.Print($"MOVE from {this.Source.Occupant.Position} to {this.Destination.Position}");
+            MovePiece();
+
+            // Clear source and destination.
+            this.Source = null;
+            this.Destination = null;
+        }
     }
 
     public void MovePiece()
     {
-        Vector2 destination = this.Destination.Position;
-
-        if (this.Destination.GetType() == typeof(Piece))
+        if (this.Source.Occupant == this.Destination.Occupant)
         {
-            destination.x -= this._pieceOffset;
-            destination.y -= this._pieceOffset;
-            this.Destination.QueueFree();
+            return;
+        }
+        Piece target = this.Destination.Occupant;
+
+        if (!(target is null))
+        {
+            target.QueueFree();
         }
 
+        this.Destination.Occupant = this.Source.Occupant;
+        this.Source.Occupant = null;
+
+        Vector2 destination = this.Destination.Position;
         destination.x += this._pieceOffset;
         destination.y += this._pieceOffset;
 
-        this.Source.Position = destination;
+        this.Destination.Occupant.Position = destination;
     }
 
     public override void _Process(float delta)
