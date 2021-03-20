@@ -6,11 +6,15 @@ using System.Linq;
 
 public class Board : Node2D
 {
+    [Signal]
+    public delegate void MoveCompleted();
+
     private readonly int _tileOffset = 18;
     private readonly int _pieceOffset = 32;
     private readonly int _scale = 100;
     public Tile Source;
     public Tile Destination;
+    public PieceColor Turn = PieceColor.BLUE;
     private readonly PieceData[] _pieceData = new PieceData[]
     {
         new PieceData(0, "red", "chariot", (x : 0, y : 0)),
@@ -80,6 +84,15 @@ public class Board : Node2D
         foreach (PieceData data in _pieceData)
         {
             Piece newPiece = (Piece)piece.Instance();
+            if (data.Color == "red")
+            {
+                newPiece.Color = PieceColor.RED;
+            }
+            else
+            {
+                newPiece.Color = PieceColor.BLUE;
+            }
+
             Texture texture = (Texture)ResourceLoader.Load($"res://Assets/Pieces/HanjaBlue/{data.Color}_{data.Category}.png");
             newPiece.GetNode<Sprite>("Sprite").Texture = texture;
             newPiece.Position = new Vector2(data.Position.x * this._scale + offset, data.Position.y * this._scale + offset);
@@ -101,18 +114,22 @@ public class Board : Node2D
         // No piece at source and tile selected contains piece.
         if (this.Source is null && !(tile.Occupant is null))
         {
-            this.Source = tile;
-            tile.HighlightTile();
-            foreach (Tuple<int, int> destination in tile.Occupant.Destinations)
+            // Only highlight if it is the color's turn.
+            if (tile.Occupant.Color == Turn)
             {
-                if (!_tileMap.ContainsKey(destination))
+                this.Source = tile;
+                tile.HighlightTile();
+                foreach (Tuple<int, int> destination in tile.Occupant.Destinations)
                 {
-                    return;
-                }
-                Tile destTile = (Tile)_tileMap[destination];
+                    if (!_tileMap.ContainsKey(destination))
+                    {
+                        return;
+                    }
+                    Tile destTile = (Tile)_tileMap[destination];
 
-                destTile.HighlightTile();
-                GD.Print($"DESTINATION: {destination}.");
+                    destTile.HighlightTile();
+                    GD.Print($"DESTINATION: {destination}.");
+                }
             }
             return;
         }
@@ -172,6 +189,7 @@ public class Board : Node2D
         destination.y += this._pieceOffset;
 
         this.Destination.Occupant.Position = destination;
+        this.EmitSignal("MoveCompleted");
     }
 
     public override void _Process(float delta)
