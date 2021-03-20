@@ -4,6 +4,7 @@ using System;
 public class Tile : Area2D
 {
     public Piece Occupant;
+    public Tuple<int, int> Coordinates;
 
     [Signal]
     public delegate void TileSelected(Tile tile);
@@ -21,5 +22,15 @@ public class Tile : Area2D
                 this.EmitSignal("TileSelected", this);
             }
         }
+    }
+
+    public void HighlightTile()
+    {
+        GetNode<Sprite>("Highlighter").Visible = true;
+    }
+
+    public void UnHighlightTile()
+    {
+        GetNode<Sprite>("Highlighter").Visible = false;
     }
 }
