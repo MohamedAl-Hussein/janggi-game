@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Game/GUI/ActionBarBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/GUI/ActionBar/quit_button_sm.png" type="Texture" id=2]
+[ext_resource path="res://Assets/GUI/ActionBar/volume_button_sm.png" type="Texture" id=3]
+[ext_resource path="res://Assets/GUI/ActionBar/pull_down_button.png" type="Texture" id=4]
+
+[node name="ActionBar" instance=ExtResource( 1 )]
+margin_right = 6.10352e-05
+margin_bottom = 110.0
+
+[node name="QuickActions" parent="." index="0"]
+margin_bottom = 90.0
+
+[node name="LeftAction" parent="QuickActions" index="0"]
+texture_normal = ExtResource( 2 )
+
+[node name="CenterAction" parent="QuickActions" index="1"]
+margin_left = 74.0
+icon = ExtResource( 4 )
+
+[node name="RightAction" parent="QuickActions" index="2"]
+margin_left = 138.0
+texture_normal = ExtResource( 3 )
