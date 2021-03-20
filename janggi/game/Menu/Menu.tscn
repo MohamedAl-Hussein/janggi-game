@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Menu/Menu.cs" type="Script" id=1]
+
+[node name="Menu" type="Panel"]
+margin_left = 4.00452
+margin_right = 1032.0
+margin_bottom = 598.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 82.509
+margin_top = 140.09
+margin_right = 139.509
+margin_bottom = 162.09
+
+[node name="PlayButton" type="Button" parent="."]
+margin_left = 478.005
+margin_top = 150.634
+margin_right = 565.005
+margin_bottom = 170.634
+text = "PLAY"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SettingsButton" type="Button" parent="."]
+margin_left = 490.018
+margin_top = 354.864
+margin_right = 577.018
+margin_bottom = 374.864
+text = "SETTINGS"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitButton" type="Button" parent="."]
+margin_left = 494.023
+margin_top = 511.041
+margin_right = 581.023
+margin_bottom = 531.041
+text = "EXIT"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LeaderboardButton" type="Button" parent="."]
+margin_left = 469.973
+margin_top = 214.67
+margin_right = 576.973
+margin_bottom = 238.67
+text = "LEADERBOARD"
+__meta__ = {
+"_edit_use_anchors_": false
+}
