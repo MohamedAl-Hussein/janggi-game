@@ -5,7 +5,6 @@ using janggi.Game.Piece;
 
 public class Piece : Area2D 
 {
-    public Tile OccupyingTile;
     public List<Tuple<int, int>> Destinations = new List<Tuple<int, int>>();
     public PieceColor Color;
 
