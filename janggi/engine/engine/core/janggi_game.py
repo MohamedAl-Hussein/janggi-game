@@ -3,15 +3,15 @@ from __future__ import annotations
 import enum
 from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 
-from helpers.command import MoveCommand
-from helpers.command_manager import CommandManager
-from helpers.obstacle_detection_strategy import IllegalDestinationStrategy, IllegalPathStrategy, InsidePalaceStrategy
-from helpers.path_generation_strategy import BranchPathStrategy, LinearDiagonalPathStrategy, LinearPathStrategy
-from helpers.stack import Stack
-from janggi_board import JanggiBoard
-from janggi_piece import JanggiPiece, PieceCategory, PieceColor
-from utils.point import Point2D
-from utils.rectangle import Rectangle
+from .helpers.command import MoveCommand
+from .helpers.command_manager import CommandManager
+from .helpers.obstacle_detection_strategy import IllegalDestinationStrategy, IllegalPathStrategy, InsidePalaceStrategy
+from .helpers.path_generation_strategy import BranchPathStrategy, LinearDiagonalPathStrategy, LinearPathStrategy
+from .helpers.stack import Stack
+from .janggi_board import JanggiBoard
+from .janggi_piece import JanggiPiece, PieceCategory, PieceColor
+from .utils.point import Point2D
+from .utils.rectangle import Rectangle
 
 if TYPE_CHECKING:
     from helpers.command import ICommand

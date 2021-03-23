@@ -3,11 +3,11 @@ from __future__ import annotations
 import unittest
 from typing import List, TYPE_CHECKING
 
-from helpers.path_generation_strategy import BranchPathStrategy, LinearDiagonalPathStrategy, LinearPathStrategy
-from utils.point import Point2D
+from engine.helpers import BranchPathStrategy, LinearDiagonalPathStrategy, LinearPathStrategy
+from engine.utils import Point2D
 
 if TYPE_CHECKING:
-    from helpers.path_generation_strategy import IPathGenerationStrategy
+    from engine.helpers import IPathGenerationStrategy
 
 
 class TestIPathGenerationStrategy(unittest.TestCase):
