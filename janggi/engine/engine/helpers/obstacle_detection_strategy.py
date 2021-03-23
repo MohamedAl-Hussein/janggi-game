@@ -3,11 +3,11 @@ from __future__ import annotations
 import abc
 from typing import List, Optional, TYPE_CHECKING
 
-from janggi_piece import JanggiPiece, PieceCategory, PieceColor
+from engine.core.janggi_piece import JanggiPiece, PieceCategory, PieceColor
 
 if TYPE_CHECKING:
-    from utils.point import Point2D
-    from utils.rectangle import Rectangle
+    from engine.utils import Point2D
+    from engine.utils import Rectangle
 
 
 class IObstacleDetectionStrategy(metaclass=abc.ABCMeta):

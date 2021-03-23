@@ -1,2 +1,2 @@
-from .point import Point2D
-from .rectangle import Rectangle
+from engine.utils.point import Point2D
+from engine.utils.rectangle import Rectangle

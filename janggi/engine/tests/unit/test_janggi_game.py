@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch
 
-from engine.janggi_game import GameState, JanggiGame
-from engine.janggi_piece import PieceColor
+from engine.core.janggi_game import GameState, JanggiGame
+from engine.core.janggi_piece import PieceColor
 from engine.utils import Point2D
 
 
@@ -51,9 +51,9 @@ class TestJanggiGame(unittest.TestCase):
         can_move = self.game.make_move("a10", "a10")
         self.assertTrue(can_move, msg)
 
-    @patch("janggi_game.JanggiGame.is_move_valid")
-    @patch("janggi_game.JanggiGame.is_in_check")
-    @patch("janggi_game.JanggiGame.is_checkmate")
+    @patch("engine.core.janggi_game.JanggiGame.is_move_valid")
+    @patch("engine.core.janggi_game.JanggiGame.is_in_check")
+    @patch("engine.core.janggi_game.JanggiGame.is_checkmate")
     def test_make_move_updates_game_state_if_checkmate(self, validation_mock, in_check_mock, checkmate_mock):
         # -------------------- Arrange -------------------- #
         # Assume move is valid and results in a checkmate.
