@@ -1,6 +1,6 @@
 import json
 
-from protocol import Protocol
+from .protocol import Protocol
 
 
 class JsonMessageProtocol(Protocol):
