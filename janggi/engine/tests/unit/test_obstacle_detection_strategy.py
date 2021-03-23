@@ -2,11 +2,11 @@ import unittest
 
 import itertools
 
-from janggi_piece import JanggiPiece, PieceCategory, PieceColor
-from utils.point import Point2D
-from utils.rectangle import Rectangle
-from helpers.obstacle_detection_strategy import IllegalDestinationStrategy, IllegalPathStrategy, InsidePalaceStrategy
-from helpers.path_generation_strategy import LinearDiagonalPathStrategy, LinearPathStrategy
+from engine.janggi_piece import JanggiPiece, PieceCategory, PieceColor
+from engine.utils import Point2D
+from engine.utils import Rectangle
+from engine.helpers import IllegalDestinationStrategy, IllegalPathStrategy, InsidePalaceStrategy
+from engine.helpers import LinearDiagonalPathStrategy, LinearPathStrategy
 
 
 class TestIObstacleDetectionStrategy(unittest.TestCase):

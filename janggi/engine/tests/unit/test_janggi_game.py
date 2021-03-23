@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch
 
-from janggi_game import GameState, JanggiGame
-from janggi_piece import PieceColor
-from utils.point import Point2D
+from engine.janggi_game import GameState, JanggiGame
+from engine.janggi_piece import PieceColor
+from engine.utils import Point2D
 
 
 class TestJanggiGame(unittest.TestCase):

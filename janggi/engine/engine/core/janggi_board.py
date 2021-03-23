@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Dict, Iterator, List, Optional, Tuple, TYPE_CHECKING
 
-from janggi_piece import PieceCategory
-from utils.point import Point2D
-from utils.rectangle import Rectangle
+from .janggi_piece import PieceCategory
+from .utils.point import Point2D
+from .utils.rectangle import Rectangle
 
 if TYPE_CHECKING:
     from janggi_piece import JanggiPiece, PieceColor

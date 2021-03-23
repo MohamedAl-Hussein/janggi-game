@@ -77,4 +77,4 @@ __pycache__/
 venv/
 
 # Pycharm files
-.idea/
+../.idea/
