@@ -3,7 +3,7 @@ from __future__ import annotations
 import abc
 from typing import Iterator, List, Set, Tuple
 
-from utils.point import Point2D
+from engine.utils import Point2D
 
 
 class IPathGenerationStrategy(metaclass=abc.ABCMeta):

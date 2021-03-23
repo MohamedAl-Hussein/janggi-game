@@ -1,3 +1,3 @@
-from . import test_janggi_game
-from . import test_obstacle_detection_strategy
-from . import test_path_generation_strategy
+from tests.unit import test_janggi_game
+from tests.unit import test_obstacle_detection_strategy
+from tests.unit import test_path_generation_strategy

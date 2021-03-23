@@ -1,6 +1,6 @@
 import unittest
 
-from engine.janggi_game import GameState, JanggiGame
+from engine.core.janggi_game import GameState, JanggiGame
 
 
 class TestGamePlay(unittest.TestCase):

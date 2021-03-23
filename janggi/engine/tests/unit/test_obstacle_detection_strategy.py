@@ -2,7 +2,7 @@ import unittest
 
 import itertools
 
-from engine.janggi_piece import JanggiPiece, PieceCategory, PieceColor
+from engine.core.janggi_piece import JanggiPiece, PieceCategory, PieceColor
 from engine.utils import Point2D
 from engine.utils import Rectangle
 from engine.helpers import IllegalDestinationStrategy, IllegalPathStrategy, InsidePalaceStrategy

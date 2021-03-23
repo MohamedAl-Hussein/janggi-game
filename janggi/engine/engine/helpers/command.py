@@ -4,10 +4,10 @@ import abc
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from utils.point import Point2D
-    from janggi_board import JanggiBoard
-    from janggi_game import GameState
-    from janggi_piece import JanggiPiece
+    from engine.utils import Point2D
+    from engine.core.janggi_board import JanggiBoard
+    from engine.core.janggi_game import GameState
+    from engine.core.janggi_piece import JanggiPiece
 
 
 class ICommand(metaclass=abc.ABCMeta):

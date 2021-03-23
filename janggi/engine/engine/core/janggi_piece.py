@@ -4,10 +4,10 @@ import enum
 from typing import Dict, Iterator, List, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from helpers.obstacle_detection_strategy import IObstacleDetectionStrategy
-    from helpers.path_generation_strategy import IPathGenerationStrategy
-    from utils.point import Point2D
-    from utils.rectangle import Rectangle
+    from engine.helpers.obstacle_detection_strategy import IObstacleDetectionStrategy
+    from engine.helpers.path_generation_strategy import IPathGenerationStrategy
+    from engine.utils.point import Point2D
+    from engine.utils.rectangle import Rectangle
 
 
 class JanggiPiece:

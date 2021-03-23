@@ -1,1 +1,1 @@
-from . import test_gameplay
+from tests.integration import test_gameplay

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Optional,TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from command import ICommand
-    from stack import Stack
+    from engine.helpers.command import ICommand
+    from engine.helpers.stack import Stack
 
 
 class CommandManager:
