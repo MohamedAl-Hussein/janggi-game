@@ -1,7 +1,8 @@
 import asyncio
 
-from .channel import Channel
-from .json_protocol import JsonMessageProtocol
+from server.channel import Channel
+from server.json_protocol import JsonMessageProtocol
+from server.message_serialization import MessageEncoder, MessageDecoder
 
 
 class AppServer:
@@ -11,7 +12,7 @@ class AppServer:
         self.game = None
 
     async def run_server(self):
-        channel = Channel(self, JsonMessageProtocol())
+        channel = Channel(self, JsonMessageProtocol(MessageEncoder, MessageDecoder))
         server = await asyncio.start_server(channel.handle_conn, self.host, self.port)
 
         addr = server.sockets[0].getsockname()
