@@ -326,17 +326,19 @@ class JanggiGame:
         if len(path) == 0 or self.board.find_obstacles(path):
             return False
 
-        # Simulate the move to see if it leaves/puts the player's General in check.
+        # Move leave/puts player's General in check.
+        if self.move_results_in_check(source, destination):
+            return False
+
+        return True
+
+    def move_results_in_check(self, source, destination):
         turn: PieceColor = self.player_turn
         self.move(source, destination)
         in_check: bool = self.is_in_check(turn)
         self.undo_move()
 
-        # Move leaves/puts player's General in check.
-        if in_check:
-            return False
-
-        return True
+        return in_check
 
     def is_in_check(self, color: PieceColor) -> bool:
         """
