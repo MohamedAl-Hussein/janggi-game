@@ -64,6 +64,18 @@ class JanggiBoard:
         self.update_coord_map(source, destination)
         self.update_piece_position(destination)
 
+    def swap(self, position_a: Point2D, position_b: Point2D):
+        """
+        Swaps two pieces at position a and b.
+
+        Used during initialization as players can transpose their horse and elephants before game start.
+        """
+
+        piece_a: JanggiPiece = self.coord_map.get(position_a.to_tuple())
+        piece_b: JanggiPiece = self.coord_map.get(position_b.to_tuple())
+        self.coord_map[position_b.to_tuple()] = piece_a
+        self.coord_map[position_a.to_tuple()] = piece_b
+
     def update_coord_map(self, source: Point2D, destination: Point2D) -> None:
         """
         Updates the coordinate map to reflect a piece moving from a source to a destination coordinate.
