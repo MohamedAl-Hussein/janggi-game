@@ -504,6 +504,63 @@ class JanggiGame:
 
         return Point2D(x_coord, y_coord)
 
+    def coordinate_system_to_algebraic_notation(self, position: Tuple[int, int]) -> str:
+        """
+        Converts a tuple coordinate into an algebraic coordinate.
+        """
+
+        column_map = {0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e', 5: 'f', 6: 'g', 7: 'h', 8: 'i'}
+
+        return column_map[position[0]] + str(10 + position[1])
+
+    def transpose_pieces(self, transpositions: Dict[str, bool]) -> None:
+        """
+        Transposes the horse and elephant for each player if requested to do so.
+
+        Called before first move is made.
+        """
+
+        blue_left_pairs = (Point2D(1, 0), Point2D(2, 0))
+        blue_right_pairs = (Point2D(6, 0), Point2D(7, 0))
+        red_left_pairs = (Point2D(6, 9), Point2D(7, 9))
+        red_right_pairs = (Point2D(1, 9), Point2D(2, 9))
+
+        if transpositions.get("blue_left_transposed"):
+            self.board.swap(*blue_left_pairs)
+
+        if transpositions.get("blue_right_transposed"):
+            self.board.swap(*blue_right_pairs)
+
+        if transpositions.get("red_left_transposed"):
+            self.board.swap(*red_left_pairs)
+
+        if transpositions.get("red_right_transposed"):
+            self.board.swap(*red_right_pairs)
+
+    def return_game_status(self):
+        return dict(
+            GameState=self.game_state.name,
+            PlayerTurn=self.player_turn.name,
+            IsChecked=self.is_in_check(self.player_turn)
+        )
+
+    def perform_move_using_tuple_coords(self, start_coord, end_coord):
+        self.make_move(
+            self.coordinate_system_to_algebraic_notation(start_coord),
+            self.coordinate_system_to_algebraic_notation(end_coord)
+        )
+
+    def return_piece_destinations(self, source):
+        piece = self.board.coord_map[tuple(source)]
+        destinations = [
+            list(path[-1].to_tuple())
+            for path
+            in self.board.generate_paths(piece)
+            if not self.move_results_in_check(piece.position, path[-1])
+        ]
+
+        return destinations
+
 
 class GameState(enum.Enum):
     """Enum class representing possible game states."""
