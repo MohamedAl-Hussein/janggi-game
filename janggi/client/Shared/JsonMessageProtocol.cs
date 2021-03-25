@@ -1,37 +1,30 @@
 ﻿using System.IO;
 using System.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Shared
 {
-
-    public class JsonMessageProtocol : Protocol<JObject>
+    public class JsonMessageProtocol : Protocol<Message>
     {
-
         static readonly JsonSerializer _serializer;
         static readonly JsonSerializerSettings _settings;
+
         static JsonMessageProtocol()
         {
             _settings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy
-                    {
-                        ProcessDictionaryKeys = false
-                    }
-                }
+                ContractResolver = new DefaultContractResolver { },
+                Converters = new JsonConverter[] { new MessageConverter() } 
             };
             _settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
             _serializer = JsonSerializer.Create(_settings);
         }
 
-        protected override JObject Decode(byte[] message)
-            => JObject.Parse(Encoding.UTF8.GetString(message));
+        protected override Message Decode(byte[] message)
+            => JsonConvert.DeserializeObject<Message>(Encoding.UTF8.GetString(message), _settings);
 
         protected override byte[] EncodeBody<T>(T message)
         {
