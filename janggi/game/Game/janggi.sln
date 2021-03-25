@@ -1,19 +1,13 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "janggi", "janggi.csproj", "{C3F11DA3-9B7F-4CAF-A9A7-F5BD9A732733}"
-EndProject
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-	Debug|Any CPU = Debug|Any CPU
-	ExportDebug|Any CPU = ExportDebug|Any CPU
-	ExportRelease|Any CPU = ExportRelease|Any CPU
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C3F11DA3-9B7F-4CAF-A9A7-F5BD9A732733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3F11DA3-9B7F-4CAF-A9A7-F5BD9A732733}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3F11DA3-9B7F-4CAF-A9A7-F5BD9A732733}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{C3F11DA3-9B7F-4CAF-A9A7-F5BD9A732733}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{C3F11DA3-9B7F-4CAF-A9A7-F5BD9A732733}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{C3F11DA3-9B7F-4CAF-A9A7-F5BD9A732733}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4854F7D7-9BC0-42AB-AD2D-2A86559BA67A}
 	EndGlobalSection
 EndGlobal
