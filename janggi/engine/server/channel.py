@@ -2,9 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from server.action_request import ActionRequest, ActionRequestHandler
-from server.message import MessageDTO
-from engine.core.janggi_game import JanggiGame
+from server.action_request import ActionRequestHandler
 
 if TYPE_CHECKING:
     from protocol import Protocol
@@ -20,14 +18,15 @@ class Channel:
         msg = await self.receive_async(reader)
 
         addr = writer.get_extra_info('peername')
-        print(f"Received {msg} from {addr!r}")
+        print(f"Received: {msg} from {addr!r}")
 
-        # prepare response
-        response_body = self.create_response(msg.copy())
+        # perform action and return result
+        action_handler = ActionRequestHandler(msg, self.server)
+        response = action_handler.create_response()
 
         # return response
-        print(f"Send: {response_body}")
-        await self.send_async(writer, response_body)
+        print(f"Send: {response}")
+        await self.send_async(writer, response)
 
     async def receive_async(self, reader):
         msg = await self.protocol.receive_async(reader)
@@ -35,28 +34,3 @@ class Channel:
 
     async def send_async(self, writer, message):
         await self.protocol.send_async(writer, message)
-
-    def create_response(self, message):
-        """
-        MESSAGE:
-
-        { action: ActionRequest,
-          data: MessageDTO }
-
-        """
-
-        # create a response based on message content
-
-        # get message action request
-        action: ActionRequest = ActionRequest[message.get("action", "INVALID_REQUEST")]
-        message: MessageDTO = message.get("data", MessageDTO())
-
-        if action is ActionRequest.NEW_GAME:
-            self.server.game = JanggiGame()
-        elif action is ActionRequest.END_GAME:
-            del self.server.game
-
-        handler = ActionRequestHandler(action, message)
-        response = handler.handle_request()
-
-        return response
