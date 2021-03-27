@@ -23,15 +23,44 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="action_request.py" />
-    <Compile Include="app_server.py" />
-    <Compile Include="channel.py" />
-    <Compile Include="json_protocol.py" />
-    <Compile Include="main.py" />
-    <Compile Include="message.py" />
-    <Compile Include="message_serialization.py" />
-    <Compile Include="piece_dto.py" />
-    <Compile Include="protocol.py" />
+    <Compile Include="channels\channel.py" />
+    <Compile Include="channels\__init__.py" />
+    <Compile Include="dtos\piece_dto.py" />
+    <Compile Include="dtos\__init__.py" />
+    <Compile Include="messages\message.py" />
+    <Compile Include="messages\message_action.py" />
+    <Compile Include="messages\message_data.py" />
+    <Compile Include="messages\message_serialization.py" />
+    <Compile Include="messages\__init__.py" />
+    <Compile Include="protocols\json_protocol.py" />
+    <Compile Include="protocols\protocol.py" />
+    <Compile Include="protocols\__init__.py" />
+    <Compile Include="server.py" />
     <Compile Include="__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="channels\" />
+    <Folder Include="channels\__pycache__\" />
+    <Folder Include="dtos\" />
+    <Folder Include="dtos\__pycache__\" />
+    <Folder Include="messages\" />
+    <Folder Include="messages\__pycache__\" />
+    <Folder Include="protocols\" />
+    <Folder Include="protocols\__pycache__\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="channels\__pycache__\channel.cpython-38.pyc" />
+    <Content Include="channels\__pycache__\__init__.cpython-38.pyc" />
+    <Content Include="dtos\__pycache__\piece_dto.cpython-38.pyc" />
+    <Content Include="dtos\__pycache__\__init__.cpython-38.pyc" />
+    <Content Include="messages\__pycache__\message.cpython-38.pyc" />
+    <Content Include="messages\__pycache__\message_action.cpython-38.pyc" />
+    <Content Include="messages\__pycache__\message_data.cpython-38.pyc" />
+    <Content Include="messages\__pycache__\message_serialization.cpython-38.pyc" />
+    <Content Include="messages\__pycache__\__init__.cpython-38.pyc" />
+    <Content Include="protocols\__pycache__\json_protocol.cpython-38.pyc" />
+    <Content Include="protocols\__pycache__\protocol.cpython-38.pyc" />
+    <Content Include="protocols\__pycache__\__init__.cpython-38.pyc" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
