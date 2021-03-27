@@ -20,6 +20,7 @@ class Protocol(metaclass=abc.ABCMeta):
         writer.write(response)
         await writer.drain()
 
+        print(f"Encoded response: {response}")
         print("Close the connection")
         writer.close()
 
