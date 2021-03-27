@@ -13,6 +13,7 @@ class ActionRequestHandler:
     def create_response(self):
         # create a response based on message content
         response = Message(MessageAction.DEFAULT, MessageData())
+        column_map = {0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e', 5: 'f', 6: 'g', 7: 'h', 8: 'i'}
 
         if self.message.Action is MessageAction.DEFAULT:
             pass
@@ -39,7 +40,10 @@ class ActionRequestHandler:
             self.server.game.transpose_pieces(self.message.Data.__dict__)
             response = Message(MessageAction.SETUP_CONFIRMED, MessageData())
         elif self.message.Action is MessageAction.MOVE_COMPLETED:
-            self.server.game.perform_move_using_tuple_coords(self.message.Data.Source, self.message.Data.Destination)
+            algebraic_src = column_map[self.message.Data.Source[0]] + str(10 - self.message.Data.Source[1])
+            algebraic_dst = column_map[self.message.Data.Destination[0]] + str(10 - self.message.Data.Destination[1])
+            self.server.game.make_move(algebraic_src, algebraic_dst)
+            print(f"Move request: {algebraic_src}, {algebraic_dst}")
             response = Message(MessageAction.MOVE_CONFIRMED, MessageData())
         elif self.message.Action is MessageAction.GET_PIECE_DESTINATIONS:
             destinations = self.server.game.return_piece_destinations(self.message.Data.Source)
