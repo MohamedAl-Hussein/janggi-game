@@ -1,7 +1,7 @@
 import json
 from json import JSONDecoder, JSONEncoder
 
-from SocketServer.protocol import Protocol
+from protocols.protocol import Protocol
 
 from typing import Optional, Type
 

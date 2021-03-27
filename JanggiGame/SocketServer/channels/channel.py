@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .action_request import ActionRequestHandler
+from action_request import ActionRequestHandler
 
 if TYPE_CHECKING:
-    from protocol import Protocol
+    from protocols.protocol import Protocol
 
 
 class Channel:
