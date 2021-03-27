@@ -1,28 +1,25 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using janggi.Game.Piece;
+
+using Common;
 
 public class Piece : Area2D 
 {
-    public List<Tuple<int, int>> Destinations = new List<Tuple<int, int>>();
     public PieceColor Color;
+    public PieceCategory Category;
+    public Coordinate Coordinates;
 
-    [Signal]
-    public delegate void PieceSelected(Piece piece);
+    public List<Coordinate> Destinations = new List<Coordinate>();
 
-    public override void _Ready()
+    public void FromDTO(PieceDTO dto)
     {
-    }
+        if (Enum.TryParse(dto.Color.ToString(), out PieceColor color))
+            Color = color;
 
-    public override void _InputEvent(Godot.Object viewport, InputEvent @event, int shapeIdx)
-    {
-        if (@event is InputEvent mouse)
-        {
-            if (mouse.IsPressed())
-            {
-                this.EmitSignal("PieceSelected", this);
-            }
-        }
+        if (Enum.TryParse(dto.Category.ToString(), out PieceCategory category))
+            Category = category;
+
+        Coordinates = new Coordinate() { x_coord = (int)dto.Position[0], y_coord = (int)dto.Position[1] };
     }
 }
