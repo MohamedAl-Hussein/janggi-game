@@ -1,34 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Common
+using Common;
+
+namespace SocketClient.Messages
 {
-    public class Message
-    {
-        public MessageAction Action { get; set; }
-
-        public MessageData Data { get; set; }
-    }
-
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum MessageAction
-    {
-        NEW_GAME,
-        GAME_STARTED,
-        SETUP_COMPLETED,
-        SETUP_CONFIRMED,
-        GET_GAME_STATUS,
-        GAME_STATUS,
-        GET_PIECE_DESTINATIONS,
-        PIECE_DESTINATIONS,
-        MOVE_COMPLETED,
-        MOVE_CONFIRMED,
-        END_GAME,
-        GAME_OVER,
-        DEFAULT 
-    }
     public class MessageData { }
 
     public class PieceData : MessageData
@@ -59,7 +34,7 @@ namespace Common
 
     public class MoveRequest : MessageData 
     { 
-        public Tuple<int, int> Source { get; set; }
-        public Tuple<int, int> Destination { get; set; }
+        public List<int> Source { get; set; }
+        public List<int> Destination { get; set; }
     }
 }

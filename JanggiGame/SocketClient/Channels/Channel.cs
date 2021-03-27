@@ -3,7 +3,9 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Common
+using SocketClient.Protocols;
+
+namespace SocketClient.Channels 
 {
 
     public abstract class Channel<TProtocol, TMessageType> : IDisposable
