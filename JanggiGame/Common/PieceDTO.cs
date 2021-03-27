@@ -8,22 +8,4 @@ namespace Common
         public PieceColor Color { get; set; }
         public PieceCategory Category { get; set; }
     }
-
-    public enum PieceColor
-    {
-        BLUE,
-        RED
-    }
-
-    public enum PieceCategory
-    {
-        GENERAL,
-        GUARD, 
-        HORSE, 
-        ELEPHANT,
-        CHARIOT,
-        CANNON,
-        SOLDIER
-    }
-
 }
