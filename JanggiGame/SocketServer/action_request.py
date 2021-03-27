@@ -1,8 +1,8 @@
 from typing import List
 
 from Engine.game import JanggiGame
-from SocketServer.message import Message, MessageData, MessageAction, GameStatus, PieceDestinations, PieceData
-from SocketServer.piece_dto import PieceDTO
+from messages import Message, MessageData, MessageAction, GameStatus, PieceDestinations, PieceData
+from dtos import PieceDTO
 
 
 class ActionRequestHandler:
