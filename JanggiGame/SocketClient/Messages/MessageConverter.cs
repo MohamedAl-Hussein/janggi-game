@@ -3,7 +3,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace Common
+using Common;
+
+namespace SocketClient.Messages
 {
     public class MessageConverter : JsonConverter
     {

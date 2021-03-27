@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Common
+namespace SocketClient.Protocols
 {
 
     public abstract class Protocol<TMessageType>

@@ -2,7 +2,9 @@
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Common
+using SocketClient.Protocols;
+
+namespace SocketClient.Channels
 {
 
     public class ClientChannel<TProtocol, TMessageType> : Channel<TProtocol, TMessageType>

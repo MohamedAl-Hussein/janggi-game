@@ -3,7 +3,9 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Common
+using SocketClient.Messages;
+
+namespace SocketClient.Protocols
 {
     public class JsonMessageProtocol : Protocol<Message>
     {
