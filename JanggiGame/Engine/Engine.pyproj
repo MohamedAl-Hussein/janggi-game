@@ -12,6 +12,7 @@
     <OutputPath>.</OutputPath>
     <Name>Engine</Name>
     <RootNamespace>Engine</RootNamespace>
+    <TestFramework>unittest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
