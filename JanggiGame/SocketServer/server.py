@@ -1,11 +1,19 @@
 import asyncio
 
-from SocketServer.channel import Channel
-from SocketServer.json_protocol import JsonMessageProtocol
-from SocketServer.message_serialization import MessageEncoder, MessageDecoder
+from channels import Channel
+from protocols import JsonMessageProtocol
+from messages import MessageEncoder, MessageDecoder
+
+HOST = "127.0.0.1"
+PORT = 9001
 
 
-class AppServer:
+def main():
+    server = Server(HOST, PORT)
+    asyncio.run(server.run_server())
+
+
+class Server:
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -20,3 +28,7 @@ class AppServer:
 
         async with server:
             await server.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
