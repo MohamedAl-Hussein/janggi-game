@@ -1,16 +1,24 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Game/Tile/Tile.cs" type="Script" id=2]
 
-[sub_resource type="Gradient" id=4]
-offsets = PoolRealArray( 0 )
-colors = PoolColorArray( 1, 0.984314, 0, 0.654902 )
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0, 0.812865, 0.822857, 0.825806 )
+colors = PoolColorArray( 1, 0.984314, 0, 0.654902, 0.939536, 0.843947, 0.0655814, 0.858395, 0.929688, 0.0762634, 0.0762634, 0.891541, 0.957031, 0.122053, 0.0112152, 0.939886 )
 
-[sub_resource type="GradientTexture" id=5]
-gradient = SubResource( 4 )
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
 width = 1
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.812865, 0.822857, 0.825806 )
+colors = PoolColorArray( 1, 0.984314, 0, 0.654902, 0.939536, 0.0655814, 0.0655814, 0.858395, 0.929688, 0.0762634, 0.0762634, 0.891541, 0.957031, 0.122053, 0.0112152, 0.939886 )
+
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 1 )
+width = 1
+
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 31.6445, 31.813 )
 
 [node name="Tile" type="Area2D"]
@@ -30,8 +38,18 @@ visible = false
 position = Vector2( 31.3338, 30.2517 )
 scale = Vector2( 99.2702, 99.1303 )
 z_index = -1
-texture = SubResource( 5 )
+texture = SubResource( 6 )
+
+[node name="IsCheckedHighlighter" type="Sprite" parent="."]
+visible = false
+position = Vector2( 31.3338, 30.2517 )
+scale = Vector2( 99.2702, 99.1303 )
+z_index = -1
+texture = SubResource( 7 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 32, 32 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
