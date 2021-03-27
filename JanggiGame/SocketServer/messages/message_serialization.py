@@ -3,7 +3,9 @@ import json
 from json import JSONEncoder, JSONDecoder
 from typing import Any
 
-from SocketServer.message import Message, MessageAction, SetupCompleted, PieceDestinations, MessageData, MoveCompleted
+from .message import Message
+from .message_action import MessageAction
+from .message_data import MessageData, SetupCompleted, PieceDestinations, MoveCompleted
 
 
 class MessageEncoder(JSONEncoder):
@@ -26,10 +28,6 @@ class MessageDecoder(JSONDecoder):
             action = MessageAction[obj["Action"]]
             data = MessageData()
 
-            d = obj["Data"]
-            # if obj["Data"] is not None:
-            #     d = json.loads(obj["Data"])
-
             if action is MessageAction.NEW_GAME:
                 pass
             elif action is MessageAction.GET_GAME_STATUS:
@@ -37,11 +35,11 @@ class MessageDecoder(JSONDecoder):
             elif action is MessageAction.END_GAME:
                 pass
             elif action is MessageAction.SETUP_COMPLETED:
-                data = SetupCompleted(**d)
+                data = SetupCompleted(**obj["Data"])
             elif action is MessageAction.GET_PIECE_DESTINATIONS:
-                data = PieceDestinations(**d)
+                data = PieceDestinations(**obj["Data"])
             elif action is MessageAction.MOVE_COMPLETED:
-                data = MoveCompleted(**d)
+                data = MoveCompleted(**obj["Data"])
             else:
                 return Message(MessageAction.DEFAULT, MessageData())
 
