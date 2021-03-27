@@ -1,36 +1,35 @@
 using Godot;
-using System;
+
+using Common;
 
 public class Tile : Area2D
 {
     public Piece Occupant;
-    public Tuple<int, int> Coordinates;
+    public Coordinate Coordinates;
 
     [Signal]
     public delegate void TileSelected(Tile tile);
 
-    public override void _Ready()
-    {
-    }
-
-    public override void _InputEvent(Godot.Object viewport, InputEvent @event, int shapeIdx)
+    public override void _InputEvent(Object viewport, InputEvent @event, int shapeIdx)
     {
         if (@event is InputEventMouse mouse)
         {
             if (mouse.IsPressed())
-            {
                 this.EmitSignal("TileSelected", this);
-            }
         }
     }
 
-    public void HighlightTile()
+    public void HighlightTile(bool isChecked = false)
     {
-        GetNode<Sprite>("Highlighter").Visible = true;
+        if (!isChecked)
+            GetNode<Sprite>("Highlighter").Visible = true;
+        else
+            GetNode<Sprite>("IsCheckedHighlighter").Visible = true;
     }
 
     public void UnHighlightTile()
     {
         GetNode<Sprite>("Highlighter").Visible = false;
+        GetNode<Sprite>("IsCheckedHighlighter").Visible = false;
     }
 }
