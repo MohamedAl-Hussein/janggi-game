@@ -1,32 +1,7 @@
-from __future__ import annotations
-
 import dataclasses
-from enum import auto, Enum
 from typing import List
 
-from SocketServer.piece_dto import PieceDTO
-
-
-@dataclasses.dataclass
-class Message:
-    Action: MessageAction
-    Data: MessageData
-
-
-class MessageAction(Enum):
-    NEW_GAME = auto()
-    GAME_STARTED = auto()
-    SETUP_COMPLETED = auto()
-    SETUP_CONFIRMED = auto()
-    GET_GAME_STATUS = auto()
-    GAME_STATUS = auto()
-    GET_PIECE_DESTINATIONS = auto()
-    PIECE_DESTINATIONS = auto()
-    MOVE_COMPLETED = auto()
-    MOVE_CONFIRMED = auto()
-    END_GAME = auto()
-    GAME_OVER = auto()
-    DEFAULT = auto()
+from dtos.piece_dto import PieceDTO
 
 
 @dataclasses.dataclass
