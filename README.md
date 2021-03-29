@@ -27,7 +27,7 @@ Responsible for dispatching messages from Game UI to Engine and passing response
 
 Responsible for consuming message from Game UI and calling relevant methods within the Engine. Sends back response message containing requested data (if any). 
 
-![Gameplay Demo](https://github.com/MohamedAl-Hussein/janggi-game/blob/dev/media/gameplay_demo_01.gif)
+![Gameplay Demo](https://github.com/MohamedAl-Hussein/janggi-game/blob/main/media/gameplay_demo_01.gif)
 
 ### Built With
 
