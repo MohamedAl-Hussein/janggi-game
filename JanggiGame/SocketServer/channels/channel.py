@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 from action_request import ActionRequestHandler
 
 if TYPE_CHECKING:
+    from messages import Message
     from protocols.protocol import Protocol
 
 
@@ -21,8 +22,8 @@ class Channel:
         print(f"Received: {msg} from {addr!r}")
 
         # perform action and return result
-        action_handler = ActionRequestHandler(msg, self.server)
-        response = action_handler.create_response()
+        action_handler: ActionRequestHandler = ActionRequestHandler(msg, self.server)
+        response: Message = action_handler.handle_request()
 
         # return response
         print(f"Send: {response}")

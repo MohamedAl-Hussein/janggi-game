@@ -1,6 +1,6 @@
 from typing import List
 
-from Engine.game import JanggiGame
+from game import JanggiGame
 from messages import Message, MessageData, MessageAction, GameStatus, PieceDestinations, PieceData
 from dtos import PieceDTO
 
@@ -10,46 +10,108 @@ class ActionRequestHandler:
         self.message = message
         self.server = server
 
-    def create_response(self):
-        # create a response based on message content
-        response = Message(MessageAction.DEFAULT, MessageData())
-        column_map = {0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e', 5: 'f', 6: 'g', 7: 'h', 8: 'i'}
+    def handle_request(self):
+        """
+        Given a request Message, inspects the Message's Action attribute, performs requested Action if it is valid,
+        and creates a response Message with optional Data to send back to client.
+        """
 
-        if self.message.Action is MessageAction.DEFAULT:
-            pass
+        # create a response based on message content
+        response: Message = Message(MessageAction.DEFAULT, MessageData())
 
         if self.message.Action is MessageAction.NEW_GAME:
-            self.server.game = JanggiGame()
-
-            pieces: List[PieceDTO] = list()
-            for position, piece in self.server.game.board.coord_map.items():
-                dto: PieceDTO = PieceDTO(
-                    Position=list(position),
-                    Color=piece.color.name,
-                    Category=piece.category.name
-                )
-
-                pieces.append(dto)
-            response = Message(MessageAction.GAME_STARTED, PieceData(pieces))
+            response = self.handle_new_game_request()
         elif self.message.Action is MessageAction.END_GAME:
-            self.server.game = None
-            response = Message(MessageAction.GAME_OVER, MessageData())
+            response = self.handle_end_game_request()
         elif self.message.Action is MessageAction.GET_GAME_STATUS:
-            response = Message(MessageAction.GAME_STATUS, GameStatus(**self.server.game.return_game_status()))
+            response = self.handle_game_status_request()
         elif self.message.Action is MessageAction.SETUP_COMPLETED:
-            self.server.game.transpose_pieces(self.message.Data.__dict__)
-            response = Message(MessageAction.SETUP_CONFIRMED, MessageData())
+            response = self.handle_setup_completed_request()
         elif self.message.Action is MessageAction.MOVE_COMPLETED:
-            algebraic_src = column_map[self.message.Data.Source[0]] + str(10 - self.message.Data.Source[1])
-            algebraic_dst = column_map[self.message.Data.Destination[0]] + str(10 - self.message.Data.Destination[1])
-            self.server.game.make_move(algebraic_src, algebraic_dst)
-            print(f"Move request: {algebraic_src}, {algebraic_dst}")
-            response = Message(MessageAction.MOVE_CONFIRMED, MessageData())
+            response = self.handle_move_request()
         elif self.message.Action is MessageAction.GET_PIECE_DESTINATIONS:
-            destinations = self.server.game.return_piece_destinations(self.message.Data.Source)
-            response = Message(
-                MessageAction.PIECE_DESTINATIONS,
-                PieceDestinations(Source=self.message.Data.Source, Destinations=destinations)
-            )
+            response = self.handle_piece_destinations_request()
+
+        # TODO: raise message action invalid if no match (or create response message with status as invalid).
 
         return response
+
+    def handle_new_game_request(self) -> Message:
+        """
+        Create a new instance of a game and assign it to the server's game attribute.
+
+        Return new Message object with starting data about each starting piece.
+        """
+
+        # Create new instance of game.
+        self.server.game = JanggiGame()
+
+        # Get data for every starting piece.
+        pieces: List[PieceDTO] = list()
+        for position, piece in self.server.game.board.coord_map.items():
+            dto: PieceDTO = PieceDTO(
+                Position=list(position),
+                Color=piece.color.name,
+                Category=piece.category.name
+            )
+
+            pieces.append(dto)
+
+        return Message(MessageAction.GAME_STARTED, PieceData(pieces))
+
+    def handle_end_game_request(self) -> Message:
+        """
+        End the current game instance by deleting any references to it.
+
+        Return new Message object to confirm game has finished.
+        """
+
+        self.server.game = None
+
+        return Message(MessageAction.GAME_OVER, MessageData())
+
+    def handle_game_status_request(self) -> Message:
+        """
+        Return a new Message object containing the current game's status, namely game state, current player's turn,
+        and if they are in check.
+        """
+
+        return Message(MessageAction.GAME_STATUS, GameStatus(**self.server.game.return_game_status()))
+
+    def handle_piece_destinations_request(self) -> Message:
+        """
+        Given the coordinates of a piece, generate a list of coordinates it can visit given the game's rules.
+
+        Return a new Message containing an array of all possible destinations, or an empty array if none exist.
+        """
+
+        destinations = self.server.game.return_piece_destinations(self.message.Data.Source)
+
+        return Message(
+            MessageAction.PIECE_DESTINATIONS,
+            PieceDestinations(Source=self.message.Data.Source, Destinations=destinations)
+        )
+
+    def handle_move_request(self) -> Message:
+        """
+        Given a source and destination coordinate, perform the move in the game.
+
+        Return a new Message object to confirm move has been completed.
+        """
+
+        src = self.server.game.coordinate_system_to_algebraic_notation(self.message.Data.Source)
+        dst = self.server.game.coordinate_system_to_algebraic_notation(self.message.Data.Destination)
+        self.server.game.make_move(src, dst)
+
+        return  Message(MessageAction.MOVE_CONFIRMED, MessageData())
+
+    def handle_setup_completed_request(self) -> Message:
+        """
+        For any horse-elephant transposition requested, update the game's board with the new transposition.
+
+        Return a new Message object to confirm transposition has been completed.
+        """
+
+        self.server.game.transpose_pieces(self.message.Data.__dict__)
+
+        return Message(MessageAction.SETUP_CONFIRMED, MessageData())
