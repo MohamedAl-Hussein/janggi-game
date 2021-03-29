@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using Common;
@@ -31,7 +32,36 @@ namespace SocketClient
             _channel.OnMessage(OnMessage);
         }
 
-        public async void HandleNewGameRequest()
+        public void NewRequest(MessageAction action, [Optional] Coordinate source, [Optional] Coordinate destination)
+        {
+            switch (action)
+            {
+                case MessageAction.NEW_GAME:
+                    HandleRequest(RequestNewGame).Wait(500);
+                    break;
+                case MessageAction.MOVE_COMPLETED:
+                    HandleRequest(() => RequestConfirmMove(source, destination)).Wait(250);
+                    break;
+                case MessageAction.GET_GAME_STATUS:
+                    HandleRequest(RequestGameStatus).Wait(250);
+                    break;
+                case MessageAction.GET_PIECE_DESTINATIONS:
+                    HandleRequest(() => RequestPieceDestinations(source)).Wait(100);
+                    break;
+                case MessageAction.SETUP_COMPLETED:
+                    break;
+            }
+        }
+
+        // Allows for request to be waitable.
+        private async Task HandleRequest(Action handler)
+        {
+            Task task = new Task(handler);
+            task.Start();
+            await task;
+        }
+
+        public async void RequestNewGame()
         {
             var message = new Message() 
             {
@@ -42,7 +72,7 @@ namespace SocketClient
             await SendMessage(message).ConfigureAwait(false);
         }
 
-        public async void HandleSetupRequest(bool left_blue, bool right_blue, bool left_red, bool right_red)
+        public async void RequestConfirmSetup(bool left_blue, bool right_blue, bool left_red, bool right_red)
         {
             Message message = new Message() 
             {
@@ -59,7 +89,7 @@ namespace SocketClient
             await SendMessage(message).ConfigureAwait(false);
         }
 
-        public async void HandleGameStatusRequest()
+        public async void RequestGameStatus()
         {
             Message message = new Message()
             {
@@ -70,7 +100,7 @@ namespace SocketClient
             await SendMessage(message).ConfigureAwait(false);
         }
 
-        public async void HandlePieceDestinationsRequest(Coordinate position)
+        public async void RequestPieceDestinations(Coordinate position)
         {
             Message message = new Message()
             {
@@ -85,7 +115,7 @@ namespace SocketClient
             await SendMessage(message).ConfigureAwait(false);
         }
 
-        public async void HandleMoveRequest(Coordinate source, Coordinate destination)
+        public async void RequestConfirmMove(Coordinate source, Coordinate destination)
         {
             Message message = new Message()
             {
@@ -100,7 +130,7 @@ namespace SocketClient
             await SendMessage(message);
         }
 
-        public async void HandleEndGameRequest()
+        public async void RequestEndGame()
         {
             Message message = new Message()
             {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Common;
 using SocketClient;
+using SocketClient.Messages;
 
 public class Game : Node2D
 {
@@ -30,7 +31,7 @@ public class Game : Node2D
     private void NewGame()
     {
         SetupBoard();
-        NewRequest(_client.HandleNewGameRequest).Wait(500);
+        _client.NewRequest(MessageAction.NEW_GAME);
         _board.SetupPieces(_client.PieceDTOs);
     }
 
@@ -75,8 +76,8 @@ public class Game : Node2D
 
     public void OnMoveCompleted(Coordinate source, Coordinate destination)
     {
-        NewRequest(() => _client.HandleMoveRequest(source, destination)).Wait(250);
-        NewRequest(_client.HandleGameStatusRequest).Wait(250);
+        _client.NewRequest(MessageAction.MOVE_COMPLETED, source, destination);
+        _client.NewRequest(MessageAction.GET_GAME_STATUS);
         _turn = _client.PlayerTurn;
     }
 
@@ -88,7 +89,7 @@ public class Game : Node2D
     {
         // Get valid destinations for selected tile
         Coordinate pos = _board.ConvertYCoord(tile.Occupant.Coordinates);
-        NewRequest(() => _client.HandlePieceDestinationsRequest(pos)).Wait(100);
+        _client.NewRequest(MessageAction.GET_PIECE_DESTINATIONS, pos);
         tile.Occupant.Destinations = _client.PieceDestinations
             .Select(dest => _board.ConvertYCoord(dest))
             .ToList();
@@ -164,13 +165,5 @@ public class Game : Node2D
         Coordinate dst = _board.ConvertYCoord(_board.FromTilePosition(destination.Position));
 
         OnMoveCompleted(src, dst);
-    }
-
-    // Allows for request to be waitable.
-    private async Task NewRequest(Action handler)
-    {
-        Task task = new Task(handler);
-        task.Start();
-        await task;
     }
 }
