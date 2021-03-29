@@ -506,7 +506,7 @@ class JanggiGame:
 
         column_map = {0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e', 5: 'f', 6: 'g', 7: 'h', 8: 'i'}
 
-        return column_map[position[0]] + str(10 + position[1])
+        return column_map[position[0]] + str(10 - position[1])
 
     def transpose_pieces(self, transpositions: Dict[str, bool]) -> None:
         """
