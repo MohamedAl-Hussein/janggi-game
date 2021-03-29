@@ -1,0 +1,87 @@
+﻿<Project Sdk="Godot.NET.Sdk/3.2.3">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Assets\Boards\brown.png" />
+    <Content Include="Assets\GUI\ActionBar\pull_down_button.png" />
+    <Content Include="Assets\GUI\ActionBar\quit_button.png" />
+    <Content Include="Assets\GUI\ActionBar\quit_button_sm.png" />
+    <Content Include="Assets\GUI\ActionBar\volume_button.png" />
+    <Content Include="Assets\GUI\ActionBar\volume_button_sm.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\blue_cannon.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\blue_chariot.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\blue_elephant.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\blue_general.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\blue_guard.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\blue_horse.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\blue_soldier.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\red_cannon.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\red_chariot.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\red_elephant.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\red_general.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\red_guard.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\red_horse.png" />
+    <Content Include="Assets\Pieces\HanjaBlue\red_soldier.png" />
+    <Content Include="Assets\Tiles\empty_tile_destination_marker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Boards\brown.png.import" />
+    <None Include="Assets\Boards\brown.svg" />
+    <None Include="Assets\Boards\brown.svg.import" />
+    <None Include="Assets\GUI\ActionBar\pull_down_button.png.import" />
+    <None Include="Assets\GUI\ActionBar\quit_button.png.import" />
+    <None Include="Assets\GUI\ActionBar\quit_button_sm.png.import" />
+    <None Include="Assets\GUI\ActionBar\volume_button.png.import" />
+    <None Include="Assets\GUI\ActionBar\volume_button_sm.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_cannon.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_cannon.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_cannon.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_chariot.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_chariot.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_chariot.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_elephant.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_elephant.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_elephant.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_general.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_general.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_general.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_guard.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_guard.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_guard.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_horse.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_horse.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_horse.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_soldier.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_soldier.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\blue_soldier.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_cannon.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_cannon.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\red_cannon.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_chariot.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_chariot.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\red_chariot.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_elephant.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_elephant.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\red_elephant.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_general.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_general.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\red_general.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_guard.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_guard.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\red_guard.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_horse.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_horse.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\red_horse.svg.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_soldier.png.import" />
+    <None Include="Assets\Pieces\HanjaBlue\red_soldier.svg" />
+    <None Include="Assets\Pieces\HanjaBlue\red_soldier.svg.import" />
+    <None Include="Assets\Tiles\empty_tile_destination_marker.png.import" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="GodotSharp" Version="3.2.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SocketClient\SocketClient.csproj" />
+  </ItemGroup>
+</Project>
