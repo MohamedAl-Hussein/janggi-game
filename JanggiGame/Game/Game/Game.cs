@@ -24,8 +24,15 @@ public class Game : Node2D
     {
         _client = new Client();
         NewGame();
+
+        Connect("MoveCompleted", this, "OnMoveCompleted");
+        Connect("SetupCompleted", this, "OnSetupCompleted");
+        Connect("GameExited", this, "OnGameExited");
     }
 
+    /// <summary>
+    /// Method <c>NewGame</c> configures the game board and sets the pieces at their starting positions.
+    /// </summary>
     private void NewGame()
     {
         SetupBoard();
@@ -33,19 +40,23 @@ public class Game : Node2D
         _board.SetupPieces(_client.PieceDTOs);
     }
 
+    /// <summary>
+    /// Method <c>SetupBoard</c> adds a new game board to the Game instance.
+    /// </summary>
     private void SetupBoard()
     {
         var board = GD.Load<PackedScene>(BOARD_SCENE);
         Board boardNode = (Board)board.Instance();
 
         AddChild(boardNode);
-        Connect("MoveCompleted", this, "OnMoveCompleted");
-        Connect("SetupCompleted", this, "OnSetupCompleted");
-        Connect("GameExited", this, "OnGameExited");
-
         _board = boardNode;
     }
 
+    /// <summary>
+    /// Method <c>OnTileSelected</c> is called when a given tile is selected by the player. 
+    /// Stores the selected tile and performs a move action if the source and destinations are valid.
+    /// </summary>
+    /// <param name="tile">The selected tile.</param>
     public void OnTileSelected(Tile tile)
     {
         // No piece at source and tile selected contains piece.
@@ -72,6 +83,12 @@ public class Game : Node2D
         }
     }
 
+    /// <summary>
+    /// Method <c>OnMoveCompleted</c> is called after a valid destination is selected for a given piece.
+    /// Calls the game engine so that it can update its position map.
+    /// </summary>
+    /// <param name="source">The source coordinate.</param>
+    /// <param name="destination">The destination coordinate.</param>
     public void OnMoveCompleted(Coordinate source, Coordinate destination)
     {
         _client.NewRequest(MessageAction.MOVE_COMPLETED, source, destination);
@@ -79,10 +96,20 @@ public class Game : Node2D
         _turn = _client.PlayerTurn;
     }
 
+    /// <summary>
+    /// Method <c>OnSetupCompleted</c> is called after the player's finalize their starting positions.
+    /// </summary>
     public void OnSetupCompleted() { }
 
+    /// <summary>
+    /// Method <c>OnGameExited</c> is called if the current game session is exited by the player.
+    /// </summary>
     public void OnGameExited() { }
 
+    /// <summary>
+    /// Method <c>HighlightSourceDestinations</c> highlights the tiles that a given piece can travel to.
+    /// </summary>
+    /// <param name="tile">The source tile.</param>
     private void HighlightSourceDestinations(Tile tile)
     {
         // Get valid destinations for selected tile
@@ -105,6 +132,10 @@ public class Game : Node2D
         }
     }
 
+    /// <summary>
+    /// Method <c>UnHighlightTiles</c> resets the tile highlight for all pieces, but keeps any red highlights
+    /// for generals in check.
+    /// </summary>
     private void UnHighlightTiles()
     {
         // Clear all tile destination highlights.
@@ -127,6 +158,11 @@ public class Game : Node2D
         }
     }
 
+    /// <summary>
+    /// Method <c>MovePiece</c> moves a piece from the source coordinate to the destination coordinate.
+    /// </summary>
+    /// <param name="source">The source coordinate.</param>
+    /// <param name="destination">The destination coordinate.</param>
     private void MovePiece(Tile source, Tile destination)
     {
         // Can't move to-from same position.

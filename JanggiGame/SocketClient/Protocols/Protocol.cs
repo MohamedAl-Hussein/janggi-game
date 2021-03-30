@@ -14,7 +14,6 @@ namespace SocketClient.Protocols
         public async Task<TMessageType> ReceiveAsync(NetworkStream networkStream)
         {
             var bodyLength = await ReadHeader(networkStream).ConfigureAwait(false);
-            //TODO: Assert valid body length
             AssertValidMessageLength(bodyLength);
             return await ReadBody(networkStream, bodyLength).ConfigureAwait(false);
         }
