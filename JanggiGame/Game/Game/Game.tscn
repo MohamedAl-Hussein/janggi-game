@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://Game/GUI/TopActionBar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/Game.cs" type="Script" id=2]
+[ext_resource path="res://Game/GUI/BottomActionBar.tscn" type="PackedScene" id=3]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
+
+[node name="TopActionBar" parent="." instance=ExtResource( 1 )]
+margin_right = 900.0
+
+[node name="BottomActionBar" parent="." instance=ExtResource( 3 )]
+margin_top = 1070.0
+margin_right = 900.0
+margin_bottom = 1140.0
