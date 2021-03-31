@@ -28,7 +28,57 @@ public class Game : Node2D
         Connect("MoveCompleted", this, "OnMoveCompleted");
         Connect("SetupCompleted", this, "OnSetupCompleted");
         Connect("GameExited", this, "OnGameExited");
+
+        // Connect to game interface buttons.
+        Node passBtn = GetNode<TextureButton>("BottomActionBar/QuickActions/PassTurnButton");
+        passBtn.Connect("PassTurnButtonPressed", this, "OnPassTurnButtonPressed");
+
+        Node rotateViewBtn = GetNode<TextureButton>("BottomActionBar/QuickActions/RotateViewButton");
+        rotateViewBtn.Connect("RotateViewButtonPressed", this, "OnRotateViewButtonPressed");
+
+        Node forfeitBtn = GetNode<TextureButton>("BottomActionBar/QuickActions/ForfeitButton");
+        forfeitBtn.Connect("ForfeitButtonPressed", this, "OnForfeitButtonPressed");
     }
+
+    /// <summary>
+    /// Method <c>OnPassTurnButtonPressed</c> is called after the pass turn button is pressed.
+    /// Makes a request to server to pass the turn for the current player. Only valid if the player's
+    /// general is not in check.
+    /// </summary>
+    public void OnPassTurnButtonPressed()
+    {
+        // Can't pass turn if General in check.
+        if (_client.IsChecked)
+            return;
+
+        // Grab a piece that belongs to player and make a move request to/from same position.
+        Piece src = new Piece();
+        bool found = false;
+        List<Tile> tiles = _board.TileMap.Values.ToList();
+
+        foreach (Tile tile in tiles)
+        {
+            if (tile.Occupant != null)
+            {
+                Piece piece = tile.Occupant;
+                if (piece.Color == _client.PlayerTurn)
+                {
+                    src = piece;
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (found)
+            OnMoveCompleted(src.Coordinates, src.Coordinates);
+    }
+
+    public void OnRotateViewButtonPressed()
+        => GD.Print("Rotate View Button Pressed!");
+
+    public void OnForfeitButtonPressed()
+        => GD.Print("Forfeit Button Pressed!");
 
     /// <summary>
     /// Method <c>NewGame</c> configures the game board and sets the pieces at their starting positions.
