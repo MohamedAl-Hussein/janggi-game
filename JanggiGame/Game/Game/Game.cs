@@ -142,7 +142,32 @@ public class Game : Node2D
     public void OnMoveCompleted(Coordinate source, Coordinate destination)
     {
         _client.NewRequest(MessageAction.MOVE_COMPLETED, source, destination);
+
+        string msg;
+        if (source.x_coord != destination.x_coord || source.y_coord != destination.y_coord)
+            msg = $"{_client.PlayerTurn}: ({source.x_coord}, {source.y_coord}) --> ({destination.x_coord}, {destination.y_coord})\n";
+        else
+            msg = $"{_client.PlayerTurn}: Passed turn\n";
+
         _client.NewRequest(MessageAction.GET_GAME_STATUS);
+
+        if (_client.IsChecked)
+        {
+            msg += "CHECK!\n";
+        }
+
+        if (_client.GameState != GameState.UNFINISHED)
+        {
+            msg += $"{_client.GameState}!";
+        }
+
+        Label msgDisplay = GetNode<Label>("TopActionBar/QuickActions/CenterDisplay/ScrollingLog/Messages");
+        ScrollContainer container = GetNode<ScrollContainer>("TopActionBar/QuickActions/CenterDisplay/ScrollingLog");
+        ScrollBar scrollBar = container.GetVScrollbar();
+
+        container.ScrollVertical = (int)(scrollBar.MaxValue + 1);
+        msgDisplay.Text += msg;
+
         _turn = _client.PlayerTurn;
     }
 
