@@ -154,7 +154,7 @@ class JanggiBoard:
             try:
                 path = next(path_generator)
             except StopIteration:
-                return list()
+                path = list()
 
         return path
 
@@ -201,10 +201,9 @@ class JanggiBoard:
             in_palace = self.is_inside_palace(piece)
 
             # Generate all paths for single piece.
-            piece_paths = list(piece.generate_path(source=piece.position, in_palace=in_palace))
+            for path in piece.generate_path(source=piece.position, in_palace=in_palace):
 
-            # Keep the paths that can be traversed.
-            for path in piece_paths:
+                # Keep the paths that can be traversed.
                 if not self.find_obstacles(path):
                     paths.append(path)
 
