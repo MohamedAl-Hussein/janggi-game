@@ -48,16 +48,98 @@ rect_clip_content = true
 
 [node name="ScrollingLog" type="ScrollContainer" parent="QuickActions/CenterDisplay"]
 margin_left = 15.0
-margin_top = 10.0
-margin_right = 435.0
+margin_top = 5.0
+margin_right = 447.0
 margin_bottom = 45.0
+rect_min_size = Vector2( 432, 0 )
 scroll_horizontal_enabled = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Messages" type="Label" parent="QuickActions/CenterDisplay/ScrollingLog"]
-margin_bottom = 14.0
+[node name="Messages" type="VBoxContainer" parent="QuickActions/CenterDisplay/ScrollingLog"]
+margin_right = 420.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="Message" type="HBoxContainer" parent="QuickActions/CenterDisplay/ScrollingLog/Messages"]
+margin_right = 420.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 420, 18 )
+custom_constants/separation = 50
+
+[node name="PlayerInfo" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message"]
+margin_right = 100.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
+bbcode_enabled = true
+bbcode_text = "New Game"
+text = "New Game"
+
+[node name="Move" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message"]
+margin_left = 150.0
+margin_right = 250.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
+bbcode_enabled = true
+
+[node name="Status" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message"]
+margin_left = 300.0
+margin_right = 400.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
+
+[node name="Message2" type="HBoxContainer" parent="QuickActions/CenterDisplay/ScrollingLog/Messages"]
+margin_top = 22.0
+margin_right = 420.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 420, 18 )
+custom_constants/separation = 50
+
+[node name="PlayerInfo" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message2"]
+margin_right = 100.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
+bbcode_enabled = true
+
+[node name="Move" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message2"]
+margin_left = 150.0
+margin_right = 250.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
+bbcode_enabled = true
+
+[node name="Status" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message2"]
+margin_left = 300.0
+margin_right = 400.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
+
+[node name="Message3" type="HBoxContainer" parent="QuickActions/CenterDisplay/ScrollingLog/Messages"]
+margin_top = 44.0
+margin_right = 420.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 420, 18 )
+custom_constants/separation = 50
+
+[node name="PlayerInfo" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message3"]
+margin_right = 100.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
+bbcode_enabled = true
+
+[node name="Move" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message3"]
+margin_left = 150.0
+margin_right = 250.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
+bbcode_enabled = true
+
+[node name="Status" type="RichTextLabel" parent="QuickActions/CenterDisplay/ScrollingLog/Messages/Message3"]
+margin_left = 300.0
+margin_right = 400.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 100, 0 )
 
 [node name="MuteButton" type="TextureButton" parent="QuickActions"]
 margin_left = 805.0

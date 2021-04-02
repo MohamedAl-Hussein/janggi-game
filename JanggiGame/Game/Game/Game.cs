@@ -145,28 +145,52 @@ public class Game : Node2D
 
         string msg;
         if (source.x_coord != destination.x_coord || source.y_coord != destination.y_coord)
-            msg = $"{_client.PlayerTurn}: ({source.x_coord}, {source.y_coord}) --> ({destination.x_coord}, {destination.y_coord})\n";
+            msg = $"({source.x_coord}, {source.y_coord}), ({destination.x_coord}, {destination.y_coord})";
         else
-            msg = $"{_client.PlayerTurn}: Passed turn\n";
+            msg = "Pass";
+
+
+        VBoxContainer msgDisplay = GetNode<VBoxContainer>("TopActionBar/QuickActions/CenterDisplay/ScrollingLog/Messages");
+        HBoxContainer message = (HBoxContainer)msgDisplay.GetChild(0).Duplicate();
+        RichTextLabel playerInfo =  (RichTextLabel)message.GetChild(0);
+        RichTextLabel move =  (RichTextLabel)message.GetChild(1);
+        RichTextLabel status =  (RichTextLabel)message.GetChild(2);
+
+        message.Visible = true;
+        if (_client.PlayerTurn == PieceColor.BLUE)
+            playerInfo.BbcodeText = "[color=#97B9FF]Player 1[/color]";
+        else
+            playerInfo.BbcodeText = "[color=#FB477E]Player 2[/color]";
+
+        if (_client.PlayerTurn == PieceColor.BLUE)
+            move.BbcodeText = $"[color=#97B9FF]{msg}[/color]";
+        else
+            move.BbcodeText = $"[color=#FB477E]{msg}[/color]";
 
         _client.NewRequest(MessageAction.GET_GAME_STATUS);
 
+        status.BbcodeText = "";
+
         if (_client.IsChecked)
-        {
-            msg += "CHECK!\n";
-        }
+            status.BbcodeText = "Check!";
 
         if (_client.GameState != GameState.UNFINISHED)
-        {
-            msg += $"{_client.GameState}!";
-        }
+            status.BbcodeText = "Checkmate!";
 
-        Label msgDisplay = GetNode<Label>("TopActionBar/QuickActions/CenterDisplay/ScrollingLog/Messages");
+        msgDisplay.AddChild(message);
+
         ScrollContainer container = GetNode<ScrollContainer>("TopActionBar/QuickActions/CenterDisplay/ScrollingLog");
-        ScrollBar scrollBar = container.GetVScrollbar();
 
-        container.ScrollVertical = (int)(scrollBar.MaxValue + 1);
-        msgDisplay.Text += msg;
+        // Source code: https://godotengine.org/qa/81740/scroll-a-scroll-container-to-the-last-added-element-in-c%23
+        container.GetVScrollbar().AllowGreater = false;
+        var maxValue = container.GetVScrollbar().MaxValue;
+        container.ScrollVertical = (int)maxValue;
+
+        var itemSpacing = container.GetConstant("separation");
+        var offset = message.RectSize.y + itemSpacing;
+
+        container.GetVScrollbar().AllowGreater = true;
+        container.ScrollVertical += (int)offset;
 
         _turn = _client.PlayerTurn;
     }
