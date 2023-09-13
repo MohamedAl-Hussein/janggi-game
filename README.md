@@ -47,12 +47,6 @@ The Engine and SocketServer components are written in Python.
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-# Contact
-
-Mohamed Al-Hussein - [LinkedIn](https://www.linkedin.com/in/mohamedal-hussein/) - mohamed.n.al.hussein@gmail.com
-
-Project Link: https://github.com/MohamedAl-Hussein/janggi-game
-
 # Acknowledgements
 
 * [C# Socket Programming Series](https://www.youtube.com/playlist?list=PLHLYG7mk_iQnUkCK3SvZVWghJ1Qts9WKn) by Richard Weeks.
